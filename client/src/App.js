@@ -7,7 +7,7 @@ function App() {
       <div>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Choose />} />
+            <Route path="/choose" element={<Choose />} />
           </Routes>
         </BrowserRouter>
       </div>
