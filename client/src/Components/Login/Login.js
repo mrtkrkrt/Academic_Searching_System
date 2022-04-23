@@ -22,7 +22,7 @@ function Login() {
   return (
     <div id="loginform">
       <h2 id="headerTitle">GİRİŞ</h2>
-      <div class="row">
+      <div className="row">
         <label>Kullanıcı Adı</label>
         <input
           type="text"
@@ -30,7 +30,7 @@ function Login() {
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
-      <div class="row">
+      <div className="row">
         <label>Şifre</label>
         <input
           type="password"
@@ -40,10 +40,10 @@ function Login() {
           }}
         />
       </div>
-      <div class="row">
+      <div className="row">
         <text>{errorText}</text>
       </div>
-      <div id="button" class="row">
+      <div id="button" className="row">
         <button onClick={handleSubmit}>KULLANICI GİRİŞ</button>
         <br />
         <button onClick={handleSubmit}>ADMİN GİRİŞ</button>
