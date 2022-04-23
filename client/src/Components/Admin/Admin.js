@@ -28,6 +28,7 @@ function Admin() {
     ) {
       setErrorText("Lütfen tüm alanları doldurunuz.");
     } else {
+      // TODO post request for database searching
     //   setErrorText("");
     //   fetch("http://localhost:8080/api/author", {
     //     method: "POST",
