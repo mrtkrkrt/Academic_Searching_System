@@ -12,6 +12,10 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
-    "nodemon": "^2.0.15"
+    "fast-xml-parser": "^4.0.7",
+    "neo4j-driver": "^4.4.5",
+    "nodemon": "^2.0.15",
+    "xml-parser": "^1.2.1",
+    "xml2js": "^0.4.23"
   }
 }
