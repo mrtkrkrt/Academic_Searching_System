@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import "./style.css"
 
 // araştırmacı adı-soyadı, yayın adı, yayın yılına göre arama yapılır.
 
