@@ -1,8 +1,18 @@
-import React from 'react'
-import "./../style.css"
+import React from "react";
+import { useState } from "react";
+import "./graph.css";
+import NeoGraph from "./NeoGraph";
+
+const NEO4J_URI = "bolt://localhost:7687";
+const NEO4J_USER = "neo4j";
+const NEO4J_PASSWORD = "admin";
 
 function Graph() {
-  // TODO visualize graph on screen and add clickable events on nodes
+  const [cypher, setCypher] = useState("MATCH (n)-[r]->(m) RETURN *");
+
+  function handleCallback(data) {
+    setCypher(data);
+  }
   return (
     <div>
       <div className="header">
@@ -17,8 +27,21 @@ function Graph() {
           </a>
         </div>
       </div>
+      <div id="loginform">
+        <NeoGraph
+          width={1000}
+          height={800}
+          containerId={"id1"}
+          neo4jUri={NEO4J_URI}
+          neo4jUser={NEO4J_USER}
+          neo4jPassword={NEO4J_PASSWORD}
+          backgroundColor={"transparent"}
+          initial_cypher={cypher}
+          parentCallback= {handleCallback}
+        />
+      </div>
     </div>
-  )
+  );
 }
 
-export default Graph
+export default Graph;
