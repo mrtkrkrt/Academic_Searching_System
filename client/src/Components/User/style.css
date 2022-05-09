@@ -191,3 +191,27 @@ html{
     float: none;
   }
 }
+
+.redButton {
+  margin-top:20px;
+  margin-left: 90px;
+  padding-bottom: 1.5rem;
+  padding: 0.5rem;
+  opacity: 0.8;
+  border-radius: 25px;
+  width: 40%;
+  height: 20px;
+  font-size: 1rem;
+  color: rgb(255, 47, 0);
+  font-weight: 700;
+  background-color: lightgray;
+  border: 0px;
+  cursor: pointer;
+  transition: opacity 0.25s ease-out;
+  border: 2px solid black;
+}
+
+.redButton:hover {
+  opacity: 4;
+  color: white;
+}

@@ -17,7 +17,7 @@ function Admin() {
     publishingKind: "",
   });
 
-  function registerDatabase() {
+  async function registerDatabase() {
     if (
       authorInfo.authorId === "" ||
       authorInfo.authorName === "" ||
@@ -28,20 +28,21 @@ function Admin() {
     ) {
       setErrorText("Lütfen tüm alanları doldurunuz.");
     } else {
-      // TODO post request for database searching
-    //   setErrorText("");
-    //   fetch("http://localhost:8080/api/author", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(authorInfo),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log(data);
-    //     });
-    console.log(authorInfo);
+      setErrorText("");
+      await fetch("http://localhost:3000/admin_add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(authorInfo),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if ((data.bool == false)) {
+            setErrorText("Bu yazar zaten var.");
+          }
+        });
     }
   }
 
@@ -65,7 +66,12 @@ function Admin() {
           <input
             type="text"
             placeholder="Araştırmacı Id Giriniz"
-            onChange={(e) => setAuthorInfo(prevState => ({...prevState, "authorId":e.target.value}))}
+            onChange={(e) =>
+              setAuthorInfo((prevState) => ({
+                ...prevState,
+                authorId: e.target.value,
+              }))
+            }
           />
         </div>
         <div className="row">
@@ -73,7 +79,12 @@ function Admin() {
           <input
             type="text"
             placeholder="Araştırmacı Ad Soyad Giriniz"
-            onChange={(e) => setAuthorInfo(prevState => ({...prevState, "authorName":e.target.value}))}
+            onChange={(e) =>
+              setAuthorInfo((prevState) => ({
+                ...prevState,
+                authorName: e.target.value,
+              }))
+            }
           />
         </div>
         <div className="row">
@@ -81,7 +92,12 @@ function Admin() {
           <input
             type="text"
             placeholder="Yayın Adı Giriniz"
-            onChange={(e) => setAuthorInfo(prevState => ({...prevState, "publishingName":e.target.value}))}
+            onChange={(e) =>
+              setAuthorInfo((prevState) => ({
+                ...prevState,
+                publishingName: e.target.value,
+              }))
+            }
           />
         </div>
         <div className="row">
@@ -91,7 +107,12 @@ function Admin() {
             placeholder="Yayın Yılı Giriniz"
             min="0"
             max="2022"
-            onChange={(e) => setAuthorInfo(prevState => ({...prevState, "publishingYear":e.target.value}))}
+            onChange={(e) =>
+              setAuthorInfo((prevState) => ({
+                ...prevState,
+                publishingYear: e.target.value,
+              }))
+            }
           />
         </div>
         <div className="row">
@@ -99,7 +120,12 @@ function Admin() {
           <input
             type="text"
             placeholder="Yayın Yeri Giriniz"
-            onChange={(e) => setAuthorInfo(prevState => ({...prevState, "publishingPlace":e.target.value}))}
+            onChange={(e) =>
+              setAuthorInfo((prevState) => ({
+                ...prevState,
+                publishingPlace: e.target.value,
+              }))
+            }
           />
         </div>
         <div className="row">
@@ -107,14 +133,19 @@ function Admin() {
           <input
             type="text"
             placeholder="Yayın Tür Bilgisi Giriniz"
-            onChange={(e) => setAuthorInfo(prevState => ({...prevState, "publishingKind":e.target.value}))}
+            onChange={(e) =>
+              setAuthorInfo((prevState) => ({
+                ...prevState,
+                publishingKind: e.target.value,
+              }))
+            }
           />
         </div>
         <div className="row">
           <text>{errorText} </text>
         </div>
         <div id="button" className="row">
-          <button onClick={ registerDatabase }>EKLE</button>
+          <button onClick={registerDatabase}>EKLE</button>
           <br />
         </div>
       </div>

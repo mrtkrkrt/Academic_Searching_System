@@ -82,7 +82,7 @@ async function addProject() {
               try {
                 if (hocalar_list.includes(authorName)) {
                   const res = await session.run(
-                    "MERGE (p:proje {id: $id, title: $title, year: $year, type: $type}) MERGE (a:author {id: $authorId, name: $authorName}) MERGE (p)-[:YAZAN]->(a)",
+                    "MERGE (p:proje {id: $id, title: $title, year: $year, type: $type}) MERGE (a:author {id: $authorId, name: $authorName}) MERGE (a)-[:YAZDI]->(p)",
                     {
                       id: currentProjectId,
                       title: currentProjecTitle,

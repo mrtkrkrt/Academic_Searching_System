@@ -1,5 +1,6 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./graph.css";
 import NeoGraph from "./NeoGraph";
 
@@ -8,26 +9,36 @@ const NEO4J_USER = "neo4j";
 const NEO4J_PASSWORD = "admin";
 
 function Graph() {
-  const [cypher, setCypher] = useState("MATCH (n)-[r]->(m) RETURN *");
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { query } = state;
+  const [cypher, setCypher] = useState(query);
 
   function handleCallback(data) {
     setCypher(data);
   }
+  function handleRefresh() {
+    navigate("/user/graph", {
+      state: {
+        query: "MATCH (n)-[r]->(m) RETURN *",
+      },
+    });
+  }
   return (
     <div>
       <div className="header">
-        <a href="#default" className="logo">
+        <a onClick={handleRefresh} className="logo">
           GRAPH SAYFASI
         </a>
         <div className="header-right">
           <a href="/user">Arama Yap</a>
-          <a href="/user/graph">Graf Görüntüle</a>
+          <a onClick={handleRefresh}>Graf Görüntüle</a>
           <a className="active" href="/">
             Çıkış Yap
           </a>
         </div>
       </div>
-      <div id="loginform">
+      <div id="graphForm">
         <NeoGraph
           width={1000}
           height={800}
@@ -37,7 +48,7 @@ function Graph() {
           neo4jPassword={NEO4J_PASSWORD}
           backgroundColor={"transparent"}
           initial_cypher={cypher}
-          parentCallback= {handleCallback}
+          parentCallback={handleCallback}
         />
       </div>
     </div>
