@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,31 +12,26 @@ function User() {
     publishingYear: "",
   });
   const [errorText, setErrorText] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
 
   function handleSubmit() {
-    if (
-      info.authorName === "" ||
-      info.publishingName === "" ||
-      info.publishingYear === ""
-    ) {
-      setErrorText("Lütfen tüm alanları doldurunuz.");
-    } else {
-      // TODO post request for database searching
-      setErrorText("");
-      fetch("http://localhost:3000/admin_add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(info),
+    setErrorText("");
+    fetch("http://localhost:3000/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    })
+      .then((res) => {
+        return res.json();
       })
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data);
-        });
-    }
+      .then((data) => {
+        console.log(data.result.records);
+        if (data.result.records[0]._fields) {
+          setSearchResult(data.result.records);
+        }
+      });
   }
 
   function navigateAuthorGraph() {
@@ -62,7 +58,7 @@ function User() {
             onClick={() => {
               navigate("/user/graph", {
                 state: {
-                  query: "MATCH (n)-[r]->(m) RETURN *"
+                  query: "MATCH (n)-[r]->(m) RETURN *",
                 },
               });
             }}
@@ -133,6 +129,26 @@ function User() {
           <button onClick={handleSubmit}>ARA</button>
           <br />
         </div>
+      </div>
+      <div
+        style={{
+          backgroundColor: "white",
+          margin: "10px",
+        }}
+      >
+        {searchResult.map((item) => {
+          let pngUrl = (item._fields[0].properties.title === "inproceedings") ? "https://cdn-icons-png.flaticon.com/512/1643/1643231.png" : "https://cdn-icons-png.flaticon.com/512/337/337118.png";
+          return (
+            <div>
+              <div className="product">
+                <img src={pngUrl} />
+                <div>{item._fields[0].properties.title}</div>
+                <div className="price">{ item._fields[0].properties.year[0]}</div>
+              </div>
+              <hr></hr>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

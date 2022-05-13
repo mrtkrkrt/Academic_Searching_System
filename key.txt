@@ -12,3 +12,12 @@ eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ii4rQC4rIiwibWl4cGFuZWxJZCI6IjE
 
   // on application exit:
   await driver.close();
+
+  {searchResult.map((item) => {
+        console.log(item.properties.type);
+        <text style={{ 
+          position: 'absolute',
+          left: '100px',
+          top: '100px',
+        }}>item.properties.type</text>;
+      })}

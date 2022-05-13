@@ -39,9 +39,65 @@ app.post("/admin_add", async (req, res) => {
   return res.json({ status: "success", bool: findAuthor });
 });
 
-app.post("/search", (req, res) => {
-  // TODO write post request for cypher queries you can search node in database
-  
+app.post("/search",async (req, res) => {
+  let query = "", result;
+  if (req.body.authorName) {
+    query += "MATCH (a:author {name: '" + req.body.authorName + "'})";
+    if (req.body.publishingName && req.body.publishingYear) {
+      query +=
+        " MATCH (a)-[:YAZDI]->(p:proje {title: ['" +
+        req.body.publishingName +
+        "'], year: ['" +
+        req.body.publishingYear +
+        "']}) RETURN p";
+    } else {
+      if (req.body.publishingName) {
+        query +=
+          " MATCH (a)-[:YAZDI]->(p:proje {title: ['" +
+          req.body.publishingName +
+          "']}) RETURN p";
+      } else if (req.body.publishingYear) {
+        query +=
+          " MATCH (a)-[:YAZDI]->(p:proje {year: ['" +
+          req.body.publishingYear +
+          "']}) RETURN p";
+      }
+    }
+    if (!req.body.publishingName && !req.body.publishingYear) {
+      query += "-[:YAZDI]->(p:proje) RETURN p";
+    }
+  } else {
+    if (req.body.publishingName && req.body.publishingYear) {
+      query +=
+        "MATCH (p:proje {title: ['" +
+        req.body.publishingName +
+        "'], year: ['" +
+        req.body.publishingYear +
+        "']}) RETURN p";
+    } else {
+      if (req.body.publishingName) {
+        query +=
+          "MATCH (p:proje {title: ['" + req.body.publishingName + "']}) RETURN p";
+      } else if (req.body.publishingYear) {
+        query +=
+          "MATCH (p:proje {year: ['" + req.body.publishingYear + "']}) RETURN p";
+      }
+    }
+  }
+  console.log(query);
+  const driver = neo4j.driver(
+    "bolt://localhost:7687",
+    neo4j.auth.basic("neo4j", "admin")
+  );
+  const session = driver.session();
+  try {
+    const res = await session.run(query);
+    result = res;
+  } finally {
+    await session.close();
+  }
+  await driver.close();
+  return res.json({ status: "success", result: result, query: query });
 });
 
 app.listen(3000, () => {

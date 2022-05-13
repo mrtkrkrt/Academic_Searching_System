@@ -12,12 +12,17 @@ function Graph() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { query } = state;
-  const [cypher, setCypher] = useState(query);
+  const [cypher, setCypher] = useState("");
+
+  useEffect(() => {
+    setCypher(query);
+  }, [query]);
 
   function handleCallback(data) {
     setCypher(data);
   }
   function handleRefresh() {
+    console.log("Yönlendi");
     navigate("/user/graph", {
       state: {
         query: "MATCH (n)-[r]->(m) RETURN *",
