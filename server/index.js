@@ -20,17 +20,19 @@ app.post("/admin_add", async (req, res) => {
       id: authorInfo.authorId,
     });
     if (res.records.length > 0) {
+      let query = "MERGE (a:author {id: '" + authorInfo.authorId + "'})" + " MERGE (b:proje {title: ['" + authorInfo.publishingName + "'], type:'" + authorInfo.publishingKind + "', year: ['" + authorInfo.publishingYear + "']}) MERGE(c:publisher {name: '" + authorInfo.publishingPlace + "'}) MERGE (a)-[:YAZDI]->(b) MERGE (c)-[:YAYINLADI]-(b)";
       findAuthor = true;
-      const result = await session.run(
-        "MERGE (a:author {id: $authorId}) MERGE (b:proje {title: $projectName, type: $projectType, year: $projectYear}) MERGE(c:publisher {name: $publisherName}) MERGE (a)-[:YAZAN]->(b) MERGE (c)-[:YAYINLADI]-(b)",
-        {
-          authorId: authorInfo.authorId,
-          projectName: authorInfo.publishingName,
-          projectType: authorInfo.publishingKind,
-          projectYear: authorInfo.publishingYear,
-          publisherName: authorInfo.publishingPlace,
-        }
-      );
+      const result = await session.run(query);
+      // const result = await session.run(
+      //   "MERGE (a:author {id: $authorId}) MERGE (b:proje {title: ['$projectName'], type: $projectType, year: $projectYear}) MERGE(c:publisher {name: $publisherName}) MERGE (a)-[:YAZAN]->(b) MERGE (c)-[:YAYINLADI]-(b)",
+      //   {
+      //     authorId: authorInfo.authorId,
+      //     projectName: authorInfo.publishingName,
+      //     projectType: authorInfo.publishingKind,
+      //     projectYear: authorInfo.publishingYear,
+      //     publisherName: authorInfo.publishingPlace,
+      //   }
+      // );
     }
   } finally {
     await session.close();
