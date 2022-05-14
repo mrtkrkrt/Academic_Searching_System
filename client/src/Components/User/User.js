@@ -137,13 +137,24 @@ function User() {
         }}
       >
         {searchResult.map((item) => {
-          let pngUrl = (item._fields[0].properties.title === "inproceedings") ? "https://cdn-icons-png.flaticon.com/512/1643/1643231.png" : "https://cdn-icons-png.flaticon.com/512/337/337118.png";
+          let pngUrl =
+            item._fields[0].properties.title === "inproceedings"
+              ? "https://cdn-icons-png.flaticon.com/512/1643/1643231.png"
+              : "https://cdn-icons-png.flaticon.com/512/337/337118.png";
           return (
             <div>
               <div className="product">
                 <img src={pngUrl} />
-                <div>{item._fields[0].properties.title}</div>
-                <div className="price">{ item._fields[0].properties.year[0]}</div>
+                <div>
+                  <span style={{ 
+                    fontSize: "20px",
+                    color: "red"
+                  }}>Title:</span>
+                  {item._fields[0].properties.title}
+                </div>
+                <div className="price">
+                  {item._fields[0].properties.year[0]}
+                </div>
               </div>
               <hr></hr>
             </div>

@@ -235,8 +235,7 @@ html{
 }
 
 .product > div {
-
-  float: left;
+  float: center;
 }
 
 .product > div.price {
